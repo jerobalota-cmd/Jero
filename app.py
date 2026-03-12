@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Sample student data
+# Student data
 student = {
     "name": "Your Name",
     "grade": 10,
@@ -10,51 +10,43 @@ student = {
 }
 
 # Home route
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
     return "Welcome to my Flask API!"
 
-# GET - view student info
+# GET student info
 @app.route("/student", methods=["GET"])
 def get_student():
     return jsonify(student)
 
-# POST - add student info
+# Add or update student info (works with GET for browser, POST for API)
 @app.route("/student/add", methods=["GET", "POST"])
 def add_student():
     data = request.get_json(silent=True) or {}
-
     student["name"] = data.get("name", student["name"])
     student["grade"] = data.get("grade", student["grade"])
     student["section"] = data.get("section", student["section"])
-
     return jsonify({
-        "message": "Student added successfully!",
+        "message": "Student added/updated successfully!",
         "student": student
     })
 
-# PUT - update student info
+# Update student info
 @app.route("/student/update", methods=["GET", "PUT"])
 def update_student():
     data = request.get_json(silent=True) or {}
-
-    if "name" in data:
-        student["name"] = data["name"]
-    if "grade" in data:
-        student["grade"] = data["grade"]
-    if "section" in data:
-        student["section"] = data["section"]
-
+    student["name"] = data.get("name", student["name"])
+    student["grade"] = data.get("grade", student["grade"])
+    student["section"] = data.get("section", student["section"])
     return jsonify({
         "message": "Student information updated!",
         "student": student
     })
 
-# DELETE - remove student
+# Delete student info
 @app.route("/student/delete", methods=["GET", "DELETE"])
 def delete_student():
     student.clear()
-
     return jsonify({
         "message": "Student record deleted!"
     })
