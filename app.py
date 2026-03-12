@@ -10,33 +10,33 @@ student = {
 }
 
 # Home route
-@app.route('/')
+@app.route("/")
 def home():
     return "Welcome to my Flask API!"
 
-# GET student information
-@app.route('/student', methods=['GET'])
+# GET - view student info
+@app.route("/student", methods=["GET"])
 def get_student():
     return jsonify(student)
 
-# POST - add/update student info
-@app.route('/student/add', methods=['POST'])
+# POST - add student info
+@app.route("/student/add", methods=["GET", "POST"])
 def add_student():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
     student["name"] = data.get("name", student["name"])
     student["grade"] = data.get("grade", student["grade"])
     student["section"] = data.get("section", student["section"])
 
     return jsonify({
-        "message": "Student added/updated successfully",
+        "message": "Student added successfully!",
         "student": student
     })
 
 # PUT - update student info
-@app.route('/student/update', methods=['PUT'])
+@app.route("/student/update", methods=["GET", "PUT"])
 def update_student():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
     if "name" in data:
         student["name"] = data["name"]
@@ -51,12 +51,12 @@ def update_student():
     })
 
 # DELETE - remove student
-@app.route('/student/delete', methods=['DELETE'])
+@app.route("/student/delete", methods=["GET", "DELETE"])
 def delete_student():
     student.clear()
 
     return jsonify({
-        "message": "Student record deleted"
+        "message": "Student record deleted!"
     })
 
 if __name__ == "__main__":
