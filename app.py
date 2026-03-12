@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 student = {
-    "name": "Your Name",
+    "name": "Jero",
     "grade": 10,
     "section": "Zechariah"
 }
@@ -19,9 +19,9 @@ def get_student():
 @app.route("/student/add", methods=["POST"])
 def add_student():
     data = request.get_json()
-    student["name"] = data.get("name", student["name"])
-    student["grade"] = data.get("grade", student["grade"])
-    student["section"] = data.get("section", student["section"])
+    student["name"] = data.get("name", student["Sanylyn"])
+    student["grade"] = data.get("grade", student["10"])
+    student["section"] = data.get("section", student["Zechariah"])
     return jsonify({"message": "Student added/updated!", "student": student})
 
 @app.route("/student/update", methods=["PUT"])
